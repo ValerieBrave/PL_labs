@@ -38,6 +38,7 @@ namespace LT
 		int idxTI;                   // индекс в таблице идентификаторов или LT_TI_NULLIDX
 		int globalIndex;
 		char operation;
+		int priority;
 		LITTYPE littype;
 		Entry()
 		{
@@ -46,9 +47,10 @@ namespace LT
 			this->idxTI = 0;
 			this->globalIndex = 0;
 			this->operation = ' ';
+			this->priority = -1;
 			this->littype = LITTYPE::NOT;
 		}
-		Entry(char lex, int line, int glob, int idXTI, LITTYPE ltype, char oper)
+		Entry(char lex, int line, int glob, int idXTI, LITTYPE ltype, char oper, int prio)
 		{
 			this->lexema[0] = lex;
 			this->lexema[1] = 0x00;
@@ -57,6 +59,7 @@ namespace LT
 			this->idxTI = idXTI;
 			this->littype = ltype;
 			this->operation = oper;
+			this->priority = prio;
 		}
 	};
 	struct LexTable // экземпляр таблицы лексем
