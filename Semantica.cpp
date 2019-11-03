@@ -109,6 +109,7 @@ namespace Sem
 					en.LTind = i;
 					en.idtype = IT::IDTYPE::LIB;
 					strcpy_s((char*)en.libname, 20, (const char*)all_units.words[LT.table[i].globalIndex]);
+					LT.table[i].idxTI = IDTab.current;
 					IT::Add(IDTab, en);
 				}
 				else if (LT.table[i].littype == LT::LITTYPE::N) // численный литерал
@@ -121,6 +122,7 @@ namespace Sem
 					en.value.vint = checkNum(LT, all_units, i);
 					strcpy_s(en.id, (const char*)genNumName(LT.table[i].globalIndex));
 					strcpy_s((char*)en.fullID, 2 * ID_MAXSIZE - 1,(const char*)genNumName(LT.table[i].globalIndex));
+					LT.table[i].idxTI = IDTab.current;
 					IT::Add(IDTab, en);
 				}
 				else if (LT.table[i].littype == LT::LITTYPE::S) // строковый литерал
@@ -132,6 +134,7 @@ namespace Sem
 					en.idtype = IT::IDTYPE::L;
 					fillInVstr(LT, en, all_units, i);
 					genStrName(en, LT.table[i].globalIndex);
+					LT.table[i].idxTI = IDTab.current;
 					IT::Add(IDTab, en);
 				}
 			}

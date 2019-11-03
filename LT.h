@@ -44,7 +44,7 @@ namespace LT
 		{
 			*this->lexema = 0x00;
 			this->sn = 0;
-			this->idxTI = 0;
+			this->idxTI = -3;
 			this->globalIndex = 0;
 			this->operation = ' ';
 			this->priority = -1;
@@ -93,7 +93,8 @@ namespace LT
 				int cur_line = this->table[i].sn;
 				while (this->table[i].sn == cur_line)
 				{
-					line[ind] = this->table[i].lexema[0];
+					if(this->table[i].operation == ' ') line[ind] = this->table[i].lexema[0];
+					else line[ind] = this->table[i].operation;
 					ind++;
 					i++;
 				}
