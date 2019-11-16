@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "Error.h"
 typedef short GRBALPHABET; // символы алфавита грамматики: терминалы >0, нетерминалы <0
 namespace GRB
@@ -20,14 +21,14 @@ namespace GRB
 			Chain(short psize, GRBALPHABET s, ...)
 			{
 				this->nt = new GRBALPHABET[this->size = psize];
-				GRBALPHABET *p = &s;
-				for (int i = 0; i < psize; i++) this->nt[i] = p[i];
+				int *p = (int*)&s;
+				for (short i = 0; i < psize; i++) this->nt[i] = (GRBALPHABET)p[i];
 			}
-			void getCChain(char* b) /*„то тут должно происходить*/
+			char* getCChain(char* b) /*права€ сторона правила*/
 			{
-				int i = 0;
-				for (; i < this->size; i++) b[i] = (char)this->nt[i];
-				b[i] = 0x00;
+				for (int i = 0; i < this->size; i++) b[i] = Chain::alphabet_to_char(this->nt[i]);
+				b[this->size] = 0x00;
+				return b;
 			}
 			static GRBALPHABET T(char t) { return GRBALPHABET(t); };
 			static GRBALPHABET N(char n) { return -GRBALPHABET(n); };
@@ -46,8 +47,7 @@ namespace GRB
 		{
 			this->nn = pnn;
 			this->iderror = iderror;
-			this->size = psize;
-			this->chains = new Chain[psize];
+			this->chains = new Chain[this->size = psize];
 			Chain* p = &c;
 			for (int i = 0; i < psize; i++) this->chains[i] = p[i];
 		}
@@ -60,36 +60,22 @@ namespace GRB
 		}
 		char* getCRule(char *buf, short nchain)
 		{
+			char bchain[200];
 			buf[0] = Rule::Chain::alphabet_to_char(this->nn);
 			buf[1] = '-';
 			buf[2] = '>';
-			int ibuf = 3, i = 0, ind =0;
-			Rule::Chain* chain = this->chains;
-			while (i < nchain)
-			{
-				chain++; i++;
-			}
-			while (ind < chain->size)
-			{
-				buf[ibuf] = Rule::Chain::alphabet_to_char(chain->nt[ind]);
-				ibuf++; ind++;
-			}
-			buf[ibuf] = 0x00;
+			buf[3] = 0x00;
+			this->chains[nchain].getCChain(bchain);
+			strcat_s(buf, sizeof(bchain)+5, bchain);
 			return buf;
 		}
 		short getNextChain(GRBALPHABET t, Rule::Chain& pchain, short j) // t-первый символ цепочки,pchain - вернуть эту цепочку, j текуща€
 		{
-			short chainnum = -1;
-			bool found = false;
-			while (j < this->size && !found)
-			{
-				if (this->chains[j].nt[0] == t) 
-				{
-					found = true; chainnum = j;
-				}
-				j++;
-			}
-			return chainnum;
+			short rc = -1;
+			while (j < size && chains[j].nt[0] != t) ++j;
+			rc = (j < size ? j : -1);
+			if (rc >= 0) pchain = this->chains[rc];
+			return rc;
 		}
 	};
 	struct Greibach
@@ -109,36 +95,26 @@ namespace GRB
 		{
 			this->startN = pstartN;
 			this->stbottomT = pstbottomT;
-			this->size = psize;
-			this->rules = new Rule[psize];
+			this->rules = new Rule[this->size = psize];
 			Rule *p = &r;
 			for (int i = 0; i < psize; i++) this->rules[i] = p[i];
 		}
-		short getRule(GRBALPHABET pnn, Rule& prule) //зачем тут пруле???
+		short getRule(GRBALPHABET pnn, Rule& prule) 
 		{
-			short rulenum = -1;
-			int i = 0;
-			while (i < this->size && rulenum==-1)
-			{
-				if (this->rules[i].nn == pnn)
-				{
-					rulenum = i;
-					this->rules[i].CopyIn(prule);
-				}
-				i++;
-			}
-			return rulenum;
+			short rc = -1;
+			short k = 0;
+			while (k < this->size && this->rules[k].nn != pnn) k++;
+			if (k < this->size) prule = this->rules[rc = k];
+			return rc;
 		}
 		Rule getRule(short n)
 		{
-			Rule *p = this->rules;
-			for (int i = 0; i < n; i++) p++;
-			Rule *rc = new Rule();
-			p->CopyIn(*rc);
-			return *rc;
+			Rule rc;
+			if (n < this->size) rc = rules[n];
+			return rc;
 		}
 		
 	};
-	Greibach getGreibach(); //что должно происходить?
+	Greibach getGreibach(); 
 	
 }
