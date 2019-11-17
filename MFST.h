@@ -126,7 +126,7 @@ namespace MFST
 			for (int k = (signed)st.size() - 1; k >= 0; --k)
 			{
 				short p = st._Get_container()[k];
-				buf[st.size() - 1 - k]; GRB::Rule::Chain::alphabet_to_char(p);
+				buf[st.size() - 1 - k] = GRB::Rule::Chain::alphabet_to_char(p);
 			}
 			buf[st.size()] = 0x00;
 			return buf;
