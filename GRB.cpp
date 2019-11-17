@@ -3,8 +3,6 @@
 #define GRB_ERROR_SERIES 600
 namespace GRB
 {
-#define NS(n) Rule::Chain::N(n)
-#define TS(n) Rule::Chain::T(n)
 	Greibach getGreibach()
 	{
 		Greibach greibach(NS('S'), TS('$'), 9,
@@ -39,7 +37,7 @@ namespace GRB
 				Rule::Chain(3, TS('('), NS('R'), TS(')'))),
 			Rule(NS('R'), GRB_ERROR_SERIES + 4, 4,
 				Rule::Chain(2, TS('t'), TS('i')),
-				Rule::Chain(3, TS('t'), TS('i'), TS(','), NS('R')),
+				Rule::Chain(4, TS('t'), TS('i'), TS(','), NS('R')),
 				Rule::Chain(1, TS('l')),
 				Rule::Chain(3, TS('l'), TS(','), NS('R'))),
 			Rule(NS('C'), GRB_ERROR_SERIES + 5, 2, // фактические параметры

@@ -50,6 +50,17 @@ namespace LT
 			this->priority = -1;
 			this->littype = LITTYPE::NOT;
 		}
+		Entry(char lex, int line)
+		{
+			this->lexema[0] = lex;
+			this->lexema[1] = 0x00;
+			this->sn = line;
+			this->idxTI = -3;
+			this->globalIndex = 0;
+			this->operation = ' ';
+			this->priority = -1;
+			this->littype = LITTYPE::NOT;
+		}
 		Entry(char lex, int line, int glob, int idXTI, LITTYPE ltype, char oper, int prio)
 		{
 			this->lexema[0] = lex;
