@@ -11,8 +11,8 @@
 #define TI_STR_MAXSIZE 255         
 namespace IT
 {
-	enum IDDATATYPE {INT=1, STR=2};  //типы данных идентификаторов: integer, string
-	enum IDTYPE {V=1, F=2, P=3, L=4, LIB=5};//типы идентификаторов: переменная, функция, параметр, литерал
+	enum IDDATATYPE {INT=1, STR=2, DEF=3};  //типы данных идентификаторов: integer, string
+	enum IDTYPE {V=1, F=2, P=3, L=4, LIB=5, DF=6};//типы идентификаторов: переменная, функция, параметр, литерал
 	
 	struct Entry
 	{

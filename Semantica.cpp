@@ -9,18 +9,20 @@ namespace Sem
 {
 	IT::IDDATATYPE define_dtype(Parse::Words all_units, LT::LexTable LT, int position)
 	{
-		IT::IDDATATYPE dtype;
-		while (*LT.table[position].lexema != 't') position--;
+		IT::IDDATATYPE dtype=IT::IDDATATYPE::DEF;
+		while (*LT.table[position].lexema != 't' && position !=0) position--; 
 		if (!strcmp((const char*)all_units.words[LT.table[position].globalIndex], "string")) dtype = IT::IDDATATYPE::STR;
-		else dtype = IT::IDDATATYPE::INT;
+		else if(!strcmp((const char*)all_units.words[LT.table[position].globalIndex], "integer")) dtype = IT::IDDATATYPE::INT;
+		if (dtype == IT::IDDATATYPE::DEF) throw ERROR_THROW_IN(118, LT.table[position].sn, position)
 		return dtype;
 	}
 	IT::IDTYPE define_type(LT::LexTable LT, int position) // тип идентификатора КРОМЕ ЛИТЕРАЛОВ
 	{
-		IT::IDTYPE type;
+		IT::IDTYPE type = IT::IDTYPE::DF;
 		if (*LT.table[position - 2].lexema == 'd') type = IT::IDTYPE::V; // объявление переменной
 		if (*LT.table[position - 2].lexema == '(' || *LT.table[position - 2].lexema == ',') type = IT::IDTYPE::P; // объявление параметра
 		if (*LT.table[position - 1].lexema == 'f' || *LT.table[position+1].lexema == '(') type = IT::IDTYPE::F; // объявление функции
+		if(type==IT::IDTYPE::DF) throw ERROR_THROW_IN(119, LT.table[position].sn, position)
 		return type;
 	}
 	void AddPref(unsigned char* prefix, LT::LexTable LT, Parse::Words all_units, IT::Entry &en, int i)

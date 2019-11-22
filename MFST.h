@@ -196,7 +196,7 @@ namespace MFST
 			RC_STEP rc = SURPRISE;
 			if (this->lenta_position < this->lenta_size)
 			{
-				if (ISNS(this->st.top()))
+				if (ISNS(this->st.top())) // добавить случай, когда в стеке остался 1 нетерминал, а лента закончилась
 				{
 					GRB::Rule rule;
 					if ((this->nrule = this->greibach.getRule(this->st.top(), rule)) >= 0)
@@ -224,6 +224,7 @@ namespace MFST
 				else { MFST_TRACE4("TS_NOK/NS_NORULECHAIN") rc = reststate() ? TS_NOK : NS_NORULECHAIN; }
 			}
 			else { rc = LENTA_END; MFST_TRACE4("LENTA_END") }
+			
 			return rc;
 		}
 		bool start() // запустить автомат
@@ -251,9 +252,9 @@ namespace MFST
 				std::cout << getDiagnosis(1, buf) << std::endl;
 				std::cout << getDiagnosis(2, buf) << std::endl;
 			} break;
-			case NS_NORULECHAIN: {MFST_TRACE4("-------->NS_NORULECHAIN")} break;
-			case NS_ERROR: {MFST_TRACE4("-------->NS_ERRROR")} break;
-			case SURPRISE: {MFST_TRACE4("-------->SURPRISE")} break;
+			case NS_NORULECHAIN: MFST_TRACE4("-------->NS_NORULECHAIN") break;
+			case NS_ERROR: MFST_TRACE4("-------->NS_ERRROR") break;
+			case SURPRISE: MFST_TRACE4("-------->SURPRISE") break;
 			}
 			return rc;
 		}
