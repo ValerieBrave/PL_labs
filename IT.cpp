@@ -2,7 +2,7 @@
 #include "IT.h"
 #include "LT.h"
 #include "Error.h"
-#include "Semantica.h"
+
 namespace IT
 {
 	IdTable Create()

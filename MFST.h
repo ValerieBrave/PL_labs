@@ -96,6 +96,18 @@ namespace MFST
 				this->nrule_chain = pnrule_chain;
 			}
 		} diagnosis[MFST_DIAGN_NUMBER];
+		struct Deducation
+		{
+			short size; //
+			short* nrules; //
+			short* nrulechains;
+			Deducation()
+			{
+				this->size = 0;
+				this->nrules = 0;
+				this->nrulechains = 0;
+			}
+		} deducation;
 		GRBALPHABET *lenta;
 		short lenta_position;
 		short nrule;
@@ -196,7 +208,7 @@ namespace MFST
 			RC_STEP rc = SURPRISE;
 			if (this->lenta_position < this->lenta_size)
 			{
-				if (ISNS(this->st.top())) // добавить случай, когда в стеке остался 1 нетерминал, а лента закончилась
+				if (ISNS(this->st.top())) // 
 				{
 					GRB::Rule rule;
 					if ((this->nrule = this->greibach.getRule(this->st.top(), rule)) >= 0)
@@ -257,6 +269,31 @@ namespace MFST
 			case SURPRISE: MFST_TRACE4("-------->SURPRISE") break;
 			}
 			return rc;
+		}
+		void printrules()
+		{
+			MfstState state;
+			GRB::Rule rule;
+			for (unsigned short k = 0; k < this->storestate.size(); k++)
+			{
+				state = storestate._Get_container()[k];
+				rule = this->greibach.getRule(state.nrule);
+				MFST_TRACE7
+			}
+		}
+		bool savededucation()
+		{
+			MfstState state;
+			GRB::Rule rule;
+			this->deducation.nrules = new short[this->deducation.size = this->storestate.size()];
+			this->deducation.nrulechains = new short[this->deducation.size];
+			for (unsigned short k = 0; k < this->storestate.size(); k++)
+			{
+				state = this->storestate._Get_container()[k];
+				this->deducation.nrules[k] = state.nrule;
+				this->deducation.nrulechains[k] = state.nrulechain;
+			}
+			return true;
 		}
 	};
 }
