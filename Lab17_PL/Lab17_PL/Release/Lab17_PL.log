@@ -1,0 +1,28 @@
+﻿Сборка начата 08.12.2019 22:47:19.
+     1>Проект "C:\Users\valerie_brave\Desktop\Языки Программирования\Lab17_PL\Lab17_PL\Lab17_PL.vcxproj" в узле 2 (целевые объекты Rebuild).
+     1>_PrepareForClean:
+         Файл "Release\Lab17_PL.tlog\Lab17_PL.lastbuildstate" удаляется.
+       InitializeBuildStatus:
+         Обращение к "Release\Lab17_PL.tlog\unsuccessfulbuild".
+       _MASM:
+         Assembling Lab17_PL.asm...
+         cmd.exe /C "C:\Users\valerie_brave\AppData\Local\Temp\tmp432ef469240e43bea25d19af379e5ef6.cmd"
+         ml.exe /c /nologo /Zi /Fo"Release\Lab17_PL.obj" /W3 /errorReport:prompt  /TaLab17_PL.asm
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.15.26726\bin\HostX86\x86\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\valerie_brave\Desktop\Языки Программирования\Lab17_PL\Release\Lab17_PL.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG:FULL /PDB:"C:\Users\valerie_brave\Desktop\Языки Программирования\Lab17_PL\Release\Lab17_PL.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\valerie_brave\Desktop\Языки Программирования\Lab17_PL\Release\Lab17_PL.lib" /MACHINE:X86 /SAFESEH Release\Lab17_PL.obj
+         LINK : указан параметр /LTCG, но не требуется создание кода; удалите /LTCG из командной строки компоновки для повышения производительности компоновщика
+     1>Lab17_PL.obj : error LNK2026: небезопасный модуль для образа SAFESEH.
+     1>C:\Users\valerie_brave\Desktop\Языки Программирования\Lab17_PL\Release\Lab17_PL.exe : fatal error LNK1281: Не удается создать образ SAFESEH.
+     1>Сборка проекта "C:\Users\valerie_brave\Desktop\Языки Программирования\Lab17_PL\Lab17_PL\Lab17_PL.vcxproj" завершена (целевые объекты Rebuild) с ошибкой.
+
+Ошибка сборки.
+
+       "C:\Users\valerie_brave\Desktop\Языки Программирования\Lab17_PL\Lab17_PL\Lab17_PL.vcxproj" (целевой объект Rebuild ) (1) ->
+       (Link конечный объект) -> 
+         Lab17_PL.obj : error LNK2026: небезопасный модуль для образа SAFESEH.
+         C:\Users\valerie_brave\Desktop\Языки Программирования\Lab17_PL\Release\Lab17_PL.exe : fatal error LNK1281: Не удается создать образ SAFESEH.
+
+    Предупреждений: 0
+    Ошибок: 2
+
+Прошло времени 00:00:01.87

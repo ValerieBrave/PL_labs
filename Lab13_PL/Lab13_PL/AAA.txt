@@ -1,0 +1,1 @@
+proc  end|proc start(cos()) end|proc start(sin(x))  end|proc  start(cos(yy)) end|proc   start(sin(xxx))   end|proc start(cos())start(sin(x))    end|proc  start(cos())start(cos()) end|

@@ -1,0 +1,143 @@
+.586
+.MODEL flat, stdcall
+includelib kernel32.lib
+includelib msvcrt.lib                ; библиотека времени исполнения с
+
+SetConsoleTitleA   PROTO :DWORD      ; установить заголовок окна консоли 
+GetStdHandle       PROTO :DWORD      ; получить handle вывода на консоль
+WriteConsoleA      PROTO :DWORD,:DWORD,:DWORD,:DWORD,:DWORD ; вывод на консоль
+ExitProcess	PROTO   :DWORD
+
+.STACK 4096
+
+.const
+
+consoletitle   db 'int_to_char',0
+str_pause      db 'pause', 0
+
+.data
+
+myarray DWORD 11, 12, 13, 14, 15, 16, 17, 18, 99, 10
+min DWORD ?
+max DWORD ?
+result1 byte 40 dup(0)             ; массив 40 байтов, заполненный нулями
+
+.code
+getmin PROC parm1 :DWORD, parm2 :DWORD
+	mov esi, parm1          
+    mov ecx, parm2
+    mov eax, [esi] 
+L1:
+	cmp [esi], eax
+	jl L2
+	jmp next
+L2:
+	mov eax, [esi]
+next:
+	add esi, 4
+	loop L1
+	ret          
+getmin ENDP
+
+getmax PROC parm1 :DWORD, parm2 :DWORD
+	mov esi, parm1          
+    mov ecx, parm2
+    mov eax, [esi] 
+L1:
+	cmp [esi], eax
+	jg L2
+	jmp next
+L2:
+	mov eax, [esi]
+next:
+	add esi, 4
+	loop L1
+	ret          
+getmax ENDP
+
+printconsole PROC uses eax ebx ecx esi edi,
+                      pstr: dword, ptitle: dword
+   push ptitle
+   call SetConsoleTitleA
+   push -11
+   call GetStdHandle
+   mov esi, pstr
+   mov edi, -1
+count:
+   inc edi
+   cmp byte ptr [esi + edi],0         ; сравниваем 2 числа 
+   jne count                          ; переход к count, если они не равны
+   push 0
+   push 0
+   push edi
+   push pstr
+   push eax
+   call WriteConsoleA
+   ret
+   printconsole ENDP
+
+int_to_char proc uses eax ebx ecx edi esi,   ; начало функции 
+                      pstr: dword,           ; адрес строки результат
+                      intfield: dword        ; преобразуемое число
+    mov edi,pstr             ; адрес результата в -> edi
+    mov esi,0                ; количество символов в результате 
+    cdq                      ; преобразование 2го слова в учетверенное копирование знакового бита регистра eax на все биты регистра edx
+    mov ebx,10               ; десятичная система счисления
+    idiv ebx                 ; aex = eax/ebx, остаток -> edx
+    test eax,80000000h       ; результат отрицательный ?
+    jz plus                  ; если результат предыдущей команды 0, т.е.положительный то на plus
+    neg eax                  ; eax = -eax
+    neg edx                  ; edx = -edx
+    mov cl, '-'              ; первый символ результата '-'
+    mov [edi],cl             ; первый символ результата '-'
+    inc edi                  ; ++edi
+plus:
+    push dx                  ; остаток -> стек
+    inc esi                  ; ++esi
+    test eax, eax            ; eax == 0?
+    jz fin                   ; если да то на fin
+    cdq                      ; знак распространили с eax на edx
+    idiv ebx                 ; aex = eax/ebx, остаток -> edx
+    jmp plus
+fin:
+    mov ecx, esi             ; количество ненулевых остатков = количеству символов в результате
+write:                       ; цикл записи результата
+    pop bx                   ; остаток из стека -> bx
+    add bl,'0'               ; сформировали символ в bl
+    mov [edi],bl             ; bl-> в результат
+    inc edi                  ; edi++
+    loop write               ; if (--ecx) > 0 goto write
+    
+    ret
+int_to_char ENDP
+
+main PROC
+	mov esi,OFFSET myarray 
+	mov ecx,LENGTHOF myarray
+	mov ebx, ecx
+	push ecx                   ; размещение в стке
+	push esi
+    call getmin
+	mov min,eax
+	mov esi,OFFSET myarray 
+	mov ecx,LENGTHOF myarray
+	push ecx
+	push esi
+	call getmax
+	mov max,eax
+	mov eax,max
+	sub eax,min
+
+    push eax                   ; исходное число
+    push offset result1        ; место для результата
+    call int_to_char           ; вызов процедуры преобразования
+
+    push offset consoletitle   ; заголовок окна консоли
+    push offset result1        ; выводимый текст
+    call printconsole
+	push 0
+	call ExitProcess
+main ENDP
+
+end main
+end
